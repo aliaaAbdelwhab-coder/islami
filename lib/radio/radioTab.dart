@@ -6,73 +6,133 @@ class Radiotab extends StatefulWidget {
   State<Radiotab> createState() => _RadiotabState();
 }
 
-class _RadiotabState extends State<Radiotab> with TickerProviderStateMixin {
+class _RadiotabState extends State<Radiotab> {
+  int selectedIndix = 0;
   @override
   Widget build(BuildContext context) {
-    TabController _tabController = TabController(length: 2, vsync: this);
-    return 
-    Stack(
-      children: [
-        Image.asset(
-          "assets/images/PNG_Images/radio_bg.jpg",
-          color: Color.fromARGB(56, 32, 32, 32),
-          width: double.infinity,
-          height: double.infinity,
-          fit: BoxFit.cover,
+    Size size = MediaQuery.of(context).size;
+    return DefaultTabController(
+      length: 2,
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: size.width * 0.03),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Image.asset('assets/images/PNG_Images/Logo.png'),
+            TabBar(
+                onTap: (index) {
+                  selectedIndix = index;
+                  setState(() {});
+                },
+                indicatorColor: Colors.transparent,
+                dividerColor: Colors.transparent,
+                labelPadding: EdgeInsets.all(0),
+                tabs: [
+                  tapUi(
+                    isSelected: selectedIndix == 0 ? true : false,
+                    tabname: "Radio",
+                  ),
+                  tapUi(
+                    isSelected: selectedIndix == 1 ? true : false,
+                    tabname: "Reciters",
+                  ),
+                ]),
+            Expanded(
+              child: TabBarView(children: [
+                ListView.separated(
+                  itemBuilder: (BuildContext context, int index) {
+                    return radioContanerUi();
+                  },
+                  itemCount: 2,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(
+                      height: size.height * 0.02,
+                    );
+                  },
+                ),
+                ListView.separated(
+                  itemBuilder: (BuildContext context, int index) {
+                    return radioContanerUi();
+                  },
+                  itemCount: 4,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(
+                      height: size.height * 0.02,
+                    );
+                  },
+                ),
+              ]),
+            ),
+          ],
         ),
-        // Expanded(
-        //   child: Column(
-        //     crossAxisAlignment: CrossAxisAlignment.stretch,
-        //     children: [
-        //       // Image.asset("assets/images/PNG_Images/Logo.png"),
-        //       TabBar(
-        //         controller: _tabController,
-        //         tabs: [
-          
-        //         Tab(
-        //           text: "data",
-        //         ),
-        //         Tab(
-        //           text: "data",
-        //         ),
-        //       ]),
-        //       TabBarView(
-        //         controller: _tabController,
-        //         children: [
-                
-        //         Text("hi data3"),
-        //       Text("hi data2")
-          
-        //       ]),
-        //     ],
-        //   ),
-        // ),
-        Container(
-          width: double.infinity,
-          height: 300 ,
-          child: TabBar(
-            controller: _tabController,
-            tabs: [Text("data"),
-                Text("data2")
-               ]
-          
-          ),
+      ),
+    );
+  }
+}
+
+class tapUi extends StatelessWidget {
+  bool isSelected;
+  String tabname;
+  tapUi({required this.isSelected, required this.tabname});
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 12),
+      width: size.width,
+      decoration: BoxDecoration(
+          color: isSelected ? Appcolors.primaryDark : Appcolors.blackOBColor,
+          borderRadius: BorderRadius.circular(12)),
+      child: Center(
+        child: Text(
+          tabname,
+          style: TextStyle(
+              fontSize: 16,
+              color: isSelected ? Appcolors.blackColor : Colors.white),
         ),
-        TabBarView(
-          controller: _tabController,
-          children:[
-            Text("1",
+      ),
+    );
+  }
+}
+
+class radioContanerUi extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      padding: EdgeInsets.only(top: size.height * 0.02),
+      decoration: BoxDecoration(
+          color: Appcolors.primaryDark,
+          borderRadius: BorderRadius.circular(20)),
+      child: Column(
+        children: [
+          Text(
+            "Radio Ibrahim Al-Akdar",
             style: TextStyle(
-              color: Appcolors.whiteColor,
-              fontSize: 36,
-              fontWeight: FontWeight.bold),
+              color: const Color.fromRGBO(32, 32, 32, 1),
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
-            Text('2',
+          ),
+          Stack(
             
-            ),
-          ]
-           )
-      ],
+            alignment: Alignment.center,
+            children: [
+              Image.asset('assets/images/PNG_Images/Mosque-02.png',
+              
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.favorite, size: 44),
+                  Icon(Icons.play_arrow, size: 44),
+                  Icon(Icons.volume_up, size: 44),
+                ],
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 }

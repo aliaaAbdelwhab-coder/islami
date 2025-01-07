@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:islami/appColors.dart';
+import 'package:islami/introductionScreen.dart';
 import 'package:islami/model/suraModel.dart';
 import 'package:islami/quan/suraDitailes.dart';
 import 'package:islami/quan/suraListUI.dart';
@@ -27,7 +28,9 @@ class _QuantabState extends State<Quantab> {
 
   @override
   void initState() {
+    // Introductionscreen();
     addSuradata();
+    loadSavedSura();
   }
 
   @override
@@ -87,11 +90,11 @@ class _QuantabState extends State<Quantab> {
                 // padding: EdgeInsets.zero,
                 itemBuilder: (context, index) {
                   return InkWell(
-                    onTap: ()  {
+                    onTap: () {
                       SaveLastSura(filterList[index].suraIndex);
-                     //Future.delayed(Duration(seconds: 2), () {
-                    //  loadSavedSura();
-                    // });
+                      //Future.delayed(Duration(seconds: 2), () {
+                      //  loadSavedSura();
+                      // });
                       Navigator.of(context).pushNamed(
                           Suraditailes.suraditailesRoute,
                           arguments: filterList[index]);
@@ -164,8 +167,8 @@ class _QuantabState extends State<Quantab> {
 
   Future<int> gitSuraSaved() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final int savedIndex =  prefs.getInt("Index") ?? 0;
-    loadSavedSura();
+    final int savedIndex = prefs.getInt("Index") ?? 0;
+    // loadSavedSura();
     return savedIndex;
   }
 
